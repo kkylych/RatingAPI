@@ -52,4 +52,8 @@ public class ProductService {
         ProductEntity updatedProduct = productRepository.save(existingProduct);
         return ProductMapper.toDTO(updatedProduct);
     }
+
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
+    }
 }

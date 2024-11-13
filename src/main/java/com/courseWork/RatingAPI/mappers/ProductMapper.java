@@ -1,8 +1,10 @@
 package com.courseWork.RatingAPI.mappers;
 
 import com.courseWork.RatingAPI.DTOs.ProductDTO;
+import com.courseWork.RatingAPI.DTOs.ReviewDTO;
 import com.courseWork.RatingAPI.entities.ProductEntity;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductMapper {
@@ -13,9 +15,9 @@ public class ProductMapper {
                 productEntity.getName(),
                 productEntity.getDescription(),
                 productEntity.getPrice(),
-                productEntity.getReviewEntityList().stream()
-                        .map(review -> new ReviewDTO(review.getId(), review.getComment(), review.getRating()))
-                        .collect(Collectors.toList())
+                productEntity.getReviewEntityList() != null ? productEntity.getReviewEntityList().stream()
+                        .map(ReviewMapper::toDTO)
+                        .collect(Collectors.toList()) : List.of()
         );
     }
 

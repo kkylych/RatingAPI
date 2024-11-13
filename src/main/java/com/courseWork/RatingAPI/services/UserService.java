@@ -17,10 +17,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO createUser(UserDTO userDTO) {
-        UserEntity userEntity = UserMapper.toEntity(userDTO);
-        UserEntity savedUser = userRepository.save(userEntity);
-        return UserMapper.toDTO(savedUser);
+    public UserEntity createUser(UserEntity user) {
+        return userRepository.save(user);
     }
 
     public List<UserDTO> getAllUsers() {
@@ -51,5 +49,9 @@ public class UserService {
 
         UserEntity updatedUser = userRepository.save(existingUser);
         return UserMapper.toDTO(updatedUser);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

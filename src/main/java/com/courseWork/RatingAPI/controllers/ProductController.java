@@ -3,24 +3,28 @@ package com.courseWork.RatingAPI.controllers;
 import com.courseWork.RatingAPI.DTOs.ProductDTO;
 import com.courseWork.RatingAPI.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("api/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+    @PostMapping("/create")
+    public ResponseEntity<Object> createProduct(@RequestBody ProductDTO productDTO) {
+        if (productService.existsByName(productDTO.name())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Продукт с таким именем уже существует.");
+        }
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
